@@ -55,7 +55,7 @@ export async function OPTIONS() {
 // CORS headers for Vercel deployment
 function corsHeaders() {
   return {
-    "Access-Control-Allow-Origin": "https://docu-vault-tent.vercel.app", // ✅ Replace with your frontend URL
+    "Access-Control-Allow-Origin": "https://doc-vault-nine.vercel.app", // ✅ Replace with your frontend URL
     "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type, Authorization",
     "Access-Control-Allow-Credentials": "true",

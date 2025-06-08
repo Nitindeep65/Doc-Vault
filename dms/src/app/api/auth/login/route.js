@@ -80,7 +80,7 @@ export async function OPTIONS() {
 // Utility function to add CORS headers
 function corsHeaders() {
   return {
-    "Access-Control-Allow-Origin": "https://docu-vault-tent.vercel.app", // ✅ Change to your actual frontend domain
+    "Access-Control-Allow-Origin": "https://doc-vault-nine.vercel.app", // ✅ Change to your actual frontend domain
     "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type, Authorization",
     "Access-Control-Allow-Credentials": "true",
