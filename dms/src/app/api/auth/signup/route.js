@@ -11,40 +11,21 @@ export async function POST(req) {
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return new NextResponse(
-        JSON.stringify({ error: "Email already registered" }),
-        {
-          status: 400,
-          headers: corsHeaders(),
-        }
-      );
+      return response(400, { error: "Email already registered" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ fullName, email, password: hashedPassword }); // ✅ Make sure your User schema field is `password`, not `passwordHash`
+    const newUser = new User({ fullName, email, password: hashedPassword });
 
     await newUser.save();
 
-    return new NextResponse(
-      JSON.stringify({ message: "User registered successfully" }),
-      {
-        status: 201,
-        headers: corsHeaders(),
-      }
-    );
+    return response(201, { message: "User registered successfully" });
   } catch (error) {
     console.error("Signup error:", error);
-    return new NextResponse(
-      JSON.stringify({ error: "Internal Server Error" }),
-      {
-        status: 500,
-        headers: corsHeaders(),
-      }
-    );
+    return response(500, { error: "Internal Server Error" });
   }
 }
 
-// Handle preflight CORS requests
 export async function OPTIONS() {
   return new NextResponse(null, {
     status: 204,
@@ -52,12 +33,18 @@ export async function OPTIONS() {
   });
 }
 
-// CORS headers for Vercel deployment
 function corsHeaders() {
   return {
-    "Access-Control-Allow-Origin": "https://doc-vault-nine.vercel.app", // ✅ Replace with your frontend URL
+    "Access-Control-Allow-Origin": "https://doc-vault-nine.vercel.app", // ✅ Your deployed frontend URL
     "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type, Authorization",
     "Access-Control-Allow-Credentials": "true",
   };
+}
+
+function response(status, body) {
+  return new NextResponse(JSON.stringify(body), {
+    status,
+    headers: corsHeaders(),
+  });
 }
