@@ -38,7 +38,7 @@ function corsHeaders() {
     "Access-Control-Allow-Origin": "https://doc-vault-nine.vercel.app", // ✅ Your deployed frontend URL
     "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type, Authorization",
-    "Access-Control-Allow-Credentials": "true",
+   
   };
 }
 
