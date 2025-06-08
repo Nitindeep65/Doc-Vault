@@ -18,7 +18,8 @@ export default function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "";
+    // ✅ Hardcoded backend URL for production
+    const apiUrl = "https://doc-vault-nine.vercel.app"; 
 
     try {
       const response = await fetch(`${apiUrl}/api/auth/login`, {
@@ -85,6 +86,7 @@ export default function LoginPage() {
               required
               className="w-full bg-white/20 text-white placeholder-gray-300 border border-white/30 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 outline-none transition-all duration-300"
               placeholder="you@example.com"
+              autoComplete="email"
             />
           </div>
 
@@ -100,6 +102,7 @@ export default function LoginPage() {
               required
               className="w-full bg-white/20 text-white placeholder-gray-300 border border-white/30 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 outline-none transition-all duration-300"
               placeholder="••••••••"
+              autoComplete="current-password"
             />
           </div>
 

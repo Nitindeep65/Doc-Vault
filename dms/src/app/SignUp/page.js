@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -8,40 +9,44 @@ export default function SignupPage() {
     email: "",
     password: "",
   });
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
   const router = useRouter();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    setError("");
+    setSuccess(false);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+
+    // ✅ Use hardcoded URL for production deployment
+    const apiUrl = "https://doc-vault-nine.vercel.app";
 
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/signup`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.error("Server error:", errorData);
-        throw new Error(errorData.error || "Failed to sign up");
-      }
+      const response = await fetch(`${apiUrl}/api/auth/signup`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
       const data = await response.json();
-      console.log("User signed up successfully:", data);
 
-      router.push("/Login");
+      if (!response.ok) {
+        throw new Error(data.error || "Signup failed");
+      }
+
+      setSuccess(true);
+      setTimeout(() => {
+        router.push("/Login");
+      }, 1500);
     } catch (error) {
       console.error("Error signing up:", error.message);
+      setError(error.message || "Something went wrong");
     }
   };
 
@@ -53,6 +58,17 @@ export default function SignupPage() {
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-5">
+          {error && (
+            <p className="text-red-400 text-sm text-center font-medium">
+              {error}
+            </p>
+          )}
+          {success && (
+            <p className="text-green-400 text-sm text-center font-medium">
+              Signup successful! Redirecting to login...
+            </p>
+          )}
+
           <div>
             <label className="block text-sm font-medium text-white mb-1">
               Full Name
@@ -80,6 +96,7 @@ export default function SignupPage() {
               required
               className="w-full bg-white/20 text-white placeholder-gray-300 border border-white/30 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 outline-none transition-all duration-300"
               placeholder="john@example.com"
+              autoComplete="email"
             />
           </div>
 
@@ -95,6 +112,7 @@ export default function SignupPage() {
               required
               className="w-full bg-white/20 text-white placeholder-gray-300 border border-white/30 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 outline-none transition-all duration-300"
               placeholder="••••••••"
+              autoComplete="new-password"
             />
           </div>
 
