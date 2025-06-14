@@ -1,6 +1,3 @@
-Here's a professional and clean `README.md` file content for your **Document Vault** project:
-
----
 
 # 📁 Document Vault
 
